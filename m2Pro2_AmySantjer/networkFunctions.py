@@ -15,7 +15,6 @@ def menu():
     Returns
     -------
     None.
-
     """
     print()
     print("-----Main Menu-----")
@@ -46,7 +45,6 @@ def getValidInt(prompt, minValue, maxValue):
     -------
     userChoice : int
         value that user inputs for main menu option(s).
-
     """
     while True:
         try:
@@ -70,7 +68,6 @@ def displayBitRep(random_binary=None):
     Returns
     -------
     None.
-
     """
     print("| Power of 2  | 2^7  | 2^6  | 2^5  | 2^4  | 2^3  | 2^2  | 2^1  | 2^0  |")
     print("-"*70)
@@ -85,15 +82,12 @@ def displayBitRep(random_binary=None):
 
 def binToDec():
     """
-    
-
     Returns
     -------
     decimal_guess : dataframe
         "Random Binary": [random_binary],
         "Random Decimal": [random_decimal],
         "Result": [result]
-
     """
     # generate a random number between 0 and 255
     random_decimal = random.randint(0, 255)
@@ -137,16 +131,14 @@ def binToDec():
 
 def decToBin():
     """
-    
-
     Returns
     -------
     binary_guess : dataframe
         "Random Decimal": [random_decimal],
         "Random Binary": [random_binary],
         "Result": [result]
-
     """
+    displayBitRep()
     # Generate random decimal number
     random_decimal = random.randint(0, 255)
     random_binary = format(random_decimal, '08b')
@@ -194,3 +186,17 @@ def resetOption():
             return False
         else:
             print("Invalid choice. Please try again.")
+
+def classfulAddressAnalysis():
+    print("Option 3 selected")
+    # display random subnet address
+    subnet1 = random.randint(1, 255)
+    subnet2 = random.randint(1, 255)
+    subnet3 = random.randint(1, 255)
+    subnet4 = random.randint(1, 255)
+    # randomSubnetAddy = 255.255.255.255
+    # list of questions for user onn subnet
+    subnetQuestions = ["Enter Address Class and leading Bit Pattern (separate by /):", "What is the prefix Length?", "What is the host address?", "Enter network bits and host bit:"]
+    for i in subnetQuestions:
+        print(i)
+    
