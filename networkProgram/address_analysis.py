@@ -1,6 +1,7 @@
 import csv
 import random
-import re
+import re # tool for working with text and validation
+import doctest
 
 # Function to generate a random IPv4 address and CIDR prefix
 def generate_random_subnet():
@@ -19,6 +20,7 @@ def generate_random_subnet():
     cidr_prefix = random.choice([8, 16, 24])  # Limits to common A, B, C network classes
     return random_ip, cidr_prefix
 
+# check formatting for subnet mask
 def validate_subnet_mask(user_input):
     """
     Validate the subnet mask format and values.
@@ -31,7 +33,7 @@ def validate_subnet_mask(user_input):
     """
     # Check if the format matches XXX.XXX.XXX.XXX where X is a digit
     pattern = r'^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$'
-    if not re.match(pattern, user_input):
+    if not re.match(pattern, user_input): # re.match attempts to match user_input string against pattern from beginning of string
         return False
     
     # Check if each octet is a valid number (0-255)
@@ -41,6 +43,7 @@ def validate_subnet_mask(user_input):
     except ValueError:
         return False
 
+# get formatting for address class (A / 0)
 def format_address_class_pattern(user_input):
     """
     Format the address class and bit pattern input to match the required format.
