@@ -1,5 +1,6 @@
 import pandas as pd
 import networkFunctions as f
+from address_analysis import classful_address_analysis
 
 def main():
     decimal_df = pd.DataFrame()
@@ -15,16 +16,16 @@ def main():
                     print()
                     decimal_df = pd.concat([decimal_df, f.binToDec()], ignore_index=True)
                     if not f.resetOption():
-                        break  # Go back to main menu
+                        break  
             case 2: 
                 while True:
                     print()
                     binary_df = pd.concat([binary_df, f.decToBin()], ignore_index=True)
                     if not f.resetOption():
-                        break  # Go back to main menu
+                        break  
             case 3: 
                 print()
-                f.classfulAddressAnalysis()
+                classful_address_analysis()
             case 4: 
                 print()
                 #print("4 SELECTED")
@@ -46,7 +47,7 @@ def main():
             decimal_df.to_csv("decimal_guess.csv", index=False)
             binary_df.to_csv("binary_guess.csv", index=False)
             print("Exiting program..\nGoodbye..")
-            break  # Exit the program immediately
+            break 
                        
 
 if __name__ == "__main__":
