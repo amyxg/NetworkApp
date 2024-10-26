@@ -1,5 +1,6 @@
 import csv
 import random
+import re
 
 # Function to generate a random IPv4 address and CIDR prefix
 def generate_random_subnet():
@@ -18,6 +19,65 @@ def generate_random_subnet():
     cidr_prefix = random.choice([8, 16, 24])  # Limits to common A, B, C network classes
     return random_ip, cidr_prefix
 
+def validate_subnet_mask(user_input):
+    """
+    Validate the subnet mask format and values.
+
+    Args:
+        user_input (str): The subnet mask entered by the user.
+
+    Returns:
+        bool: True if the format is valid, False otherwise.
+    """
+    # Check if the format matches XXX.XXX.XXX.XXX where X is a digit
+    pattern = r'^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$'
+    if not re.match(pattern, user_input):
+        return False
+    
+    # Check if each octet is a valid number (0-255)
+    try:
+        octets = [int(x) for x in user_input.split('.')]
+        return all(0 <= octet <= 255 for octet in octets)
+    except ValueError:
+        return False
+
+def format_address_class_pattern(user_input):
+    """
+    Format the address class and bit pattern input to match the required format.
+
+    Args:
+        user_input (str): The user's input for address class and bit pattern.
+
+    Returns:
+        tuple: (bool, str) - (is_valid, formatted_string)
+        bool: True if input is valid, False otherwise
+        str: Formatted string if valid, None if invalid
+    """
+    try:
+        # Remove any extra spaces and split by '/'
+        parts = user_input.strip().split('/')
+        if len(parts) != 2:
+            return False, None
+        
+        # Extract class and pattern
+        address_class = parts[0].strip().upper()
+        bit_pattern = parts[1].strip()
+        
+        # Validate address class is A, B, C, D, or E
+        if address_class not in ['A', 'B', 'C', 'D', 'E']:
+            return False, None
+            
+        # Validate bit pattern contains only 0s and 1s
+        if not all(bit in '01' for bit in bit_pattern):
+            return False, None
+            
+        # Format with proper spacing
+        formatted = f"{address_class} / {bit_pattern}"
+        return True, formatted
+        
+    except Exception:
+        return False, None
+
 # Function to calculate answers based on the generated IP and CIDR
 def calculate_answers(ip, cidr_prefix):
     """
@@ -28,14 +88,7 @@ def calculate_answers(ip, cidr_prefix):
         cidr_prefix (int): The CIDR prefix length (e.g., 24 for a /24 network).
 
     Returns:
-        dict: A dictionary containing the following keys and their respective values:
-            - "Address Class and Leading Bit Pattern": The class and leading bit pattern of the IP address.
-            - "Prefix Length": The CIDR prefix length as a string.
-            - "Host Address in Binary": The binary representation of the host portion.
-            - "Network Bits in Binary": The binary representation of the network portion.
-            - "Subnet Mask": The subnet mask in dotted decimal notation.
-            - "Number of Host Bits": The number of host bits as a string.
-            - "Number of Network Bits": The number of network bits as a string.
+        dict: A dictionary containing networking information.
     """
     first_octet = int(ip.split('.')[0])
 
@@ -62,17 +115,17 @@ def calculate_answers(ip, cidr_prefix):
     ip_binary = ''.join(f"{octet:08b}" for octet in ip_octets)
     
     # Network part: first `cidr_prefix` bits, Host part: remaining bits
-    network_bits_binary = ip_binary[:cidr_prefix]  # First n bits (network part)
-    host_bits_binary = ip_binary[cidr_prefix:]     # Remaining bits (host part)
+    network_bits_binary = ip_binary[:cidr_prefix]
+    host_bits_binary = ip_binary[cidr_prefix:]
     
     # Ensure host portion is extracted correctly based on CIDR prefix
     if cidr_prefix == 8:
-        host_bits_binary = ip_binary[8:]  # Host bits are the last 24 bits
+        host_bits_binary = ip_binary[8:]
     
     return {
         "Address Class and Leading Bit Pattern": f"{address_class} / {leading_bit_pattern}",
         "Prefix Length": str(cidr_prefix),
-        "Host Address in Binary": host_bits_binary,  # Corrected host bits binary
+        "Host Address in Binary": host_bits_binary,
         "Network Bits in Binary": network_bits_binary,
         "Subnet Mask": subnet_mask,
         "Number of Host Bits": str(32 - cidr_prefix),
@@ -102,10 +155,6 @@ def log_result(question, correct_answer, user_answer):
 def classful_address_analysis():
     """
     Main function to perform Classful Address Analysis.
-
-    This function generates a random IP address with a CIDR prefix, calculates networking
-    information, and presents a question to the user based on the generated IP and CIDR.
-    The user's answer is evaluated, and feedback is provided. Results are logged to a CSV file.
     """
     while True:
         # Generate a random subnet and calculate answers
@@ -127,7 +176,24 @@ def classful_address_analysis():
         
         # Display question and get user input
         print("\n" + question)
-        user_answer = input("Your Answer: ")
+        
+        # Special handling for different question types
+        if "Address Class and leading Bit Pattern" in question:
+            while True:
+                user_answer = input("Your Answer (format: X / Y, e.g., 'A / 0'): ")
+                is_valid, formatted_answer = format_address_class_pattern(user_answer)
+                if is_valid:
+                    user_answer = formatted_answer
+                    break
+                print("Error: Please enter the address class and bit pattern in the format 'X / Y' where X is A, B, C, D, or E and Y is the bit pattern (e.g., 'A / 0')")
+        elif "Subnet Mask" in question:
+            while True:
+                user_answer = input("Your Answer (format: XXX.XXX.XXX.XXX): ")
+                if validate_subnet_mask(user_answer):
+                    break
+                print("Error: Please enter the subnet mask in the format XXX.XXX.XXX.XXX (e.g., 255.255.0.0)")
+        else:
+            user_answer = input("Your Answer: ")
         
         # Log the result to the CSV
         result = log_result(question, correct_answer, user_answer)
@@ -152,12 +218,5 @@ def classful_address_analysis():
 
 # Initialize CSV file with headers if it doesn't exist
 with open("classfullAddress.csv", mode="w", newline="") as file:
-    """
-    Initialize the CSV file for logging results.
-
-    Creates a new file named "classfullAddress.csv" if it does not already exist, with
-    headers: "Question", "Correct Answer", "User Answer", and "Result".
-    """
     writer = csv.writer(file)
     writer.writerow(["Question", "Correct Answer", "User Answer", "Result"])
-

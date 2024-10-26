@@ -9,7 +9,6 @@ def main():
     while True:
         f.menu()
         userChoice = f.getValidInt("Enter a number from the menu: ", 1, 9)   
-        
         match userChoice:
             case 1: 
                 while True:
@@ -41,7 +40,6 @@ def main():
             case 8: 
                 print()
                 #print("8 SELECTED")
-
         if userChoice == 9: 
             print()
             decimal_df.to_csv("decimal_guess.csv", index=False)
