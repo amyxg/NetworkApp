@@ -1,21 +1,28 @@
 # NetworkApp
-this program is to help Networking students practice and test their understanding of some networking concepts.
+A Python-based educational tool designed to help students practice and test their understanding of networking concepts. This program is part of a larger project that will eventually evolve into a web-based application.
 
-# checking coding standards using virtual environment:
-.\env\Scripts\activate
+# Current Features
+The program currently implements two core functionalities:
 
-cd networkProgram
+Binary to Decimal Conversion Practice
+- Displays bit position values representation
+- Generates random binary numbers
+- Tests user's ability to convert binary to decimal
+- Provides visual feedback with byte representation
+- Tracks user performance
 
-python -m pip install pycodestyle
-python -m pycodestyle networkMain.py
-or 
-pycodestyle networkMain.py
+Decimal to Binary Conversion Practice
+- Generates random decimal numbers
+- Tests user's ability to convert decimal to binary
+- Provides immediate feedback
+- Tracks user performance
 
-python -m pip install pylint
-python -m pylint networkMain.py
+# Requirements
+- Python 3.x
+- Pandas (for DataFrame operations)
+- Random library (for number generation)
+- Sqlite3
 
-# viewing csv files on VS Code / Github
+# Viewing csv files on VS Code / Github
 install 'Edit csv' extension (extension to edit csv files with a table ui)
 
-# doctest
-pip install --upgrade robotframework-doctestlibrary
