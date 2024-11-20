@@ -1,4 +1,4 @@
-# NetworkApp
+# NetQuizzer
 A Python-based educational tool designed to help students practice and test their understanding of networking concepts. This program is part of a larger project that will eventually evolve into a web-based application.
 
 # Current Features
@@ -26,6 +26,7 @@ Decimal to Binary Conversion Practice
 # Viewing csv files on VS Code / Github
 install 'Edit csv' extension (extension to edit csv files with a table ui)
 
+-----------------------------------------------------
 # Create a virtual environment (recommended)
 python -m venv env
 source env/bin/activate  
@@ -34,4 +35,14 @@ source env/bin/activate
 pip install flask flask-cors pandas
 
 # Run the Flask backend
-python netQuizzer.py
+python app.py
+
+---------------------------------------------------
+# Run React Frontend
+cd react_frontend
+
+# Install axios for HTTP requests in react_frontend
+npm install axios
+
+# Start React development server
+npm start
