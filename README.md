@@ -26,3 +26,12 @@ Decimal to Binary Conversion Practice
 # Viewing csv files on VS Code / Github
 install 'Edit csv' extension (extension to edit csv files with a table ui)
 
+# Create a virtual environment (recommended)
+python -m venv env
+source env/bin/activate  
+
+# Install required Python packages
+pip install flask flask-cors pandas
+
+# Run the Flask backend
+python netQuizzer.py
