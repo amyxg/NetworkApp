@@ -1,12 +1,6 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Sep 24 20:15:14 2024
-
-@author: amyxg
-"""
-
 import pandas as pd
 import random
+import os
 
 def menu():
     """
@@ -75,7 +69,7 @@ def displayBitRep(random_binary=None):
     print(f"| Decimal     | {128:>4} | {64:>4} | {32:>4} | {16:>4} | {8:>4} | {4:>4} | {2:>4} | {1:>4} |")
     print("| Place Value |      |      |      |      |      |      |      |      |")
     print("-"*70)
-    
+    # Shows user the updated table with binary inputs
     if random_binary:
         print(f"| Binary      | {random_binary[0]:>4} | {random_binary[1]:>4} | {random_binary[2]:>4} | {random_binary[3]:>4} | {random_binary[4]:>4} | {random_binary[5]:>4} | {random_binary[6]:>4} | {random_binary[7]:>4} |")
         print("-"*70)
@@ -97,7 +91,6 @@ def binToDec():
     displayBitRep()
     print("What is the Decimal value for the Binary number below.")
     print(random_binary)
-    # print(random_decimal) # use this for quick checks on right or wrong answers
 
     # Ask user to guess the decimal value
     user_guess = int(input("\nEnter a decimal number (e.g., 0-255): "))
@@ -105,7 +98,7 @@ def binToDec():
     # Evaluate user's guess
     if user_guess == random_decimal:
         print("Well done!")
-        print("Your asnwer is correct.")
+        print("Your answer is correct.")
         print("See table below\n")
         
         print(f"The binary representation of {random_decimal} is:")
@@ -152,7 +145,7 @@ def decToBin():
     # Evaluate user's guess
     if user_guess == random_binary:
         print("Well done!")
-        print("Your asnwer is correct.")
+        print("Your answer is correct.")
         result = "Correct"
     else:
         print("Answer incorrect!") 
@@ -199,4 +192,3 @@ def classfulAddressAnalysis():
     subnetQuestions = ["Enter Address Class and leading Bit Pattern (separate by /):", "What is the prefix Length?", "What is the host address?", "Enter network bits and host bit:"]
     for i in subnetQuestions:
         print(i)
-    
